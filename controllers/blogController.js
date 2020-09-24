@@ -9,8 +9,7 @@ blogRouter.get("/", (request, response) => {
 });
 
 // Create blog
-blogRouter.post("/", (request, response) => {
-  console.log('passou aqui')
+blogRouter.post("/", (request, response) => {  
   const blog = new Blog(request.body);
 
   blog.save().then((result) => {
