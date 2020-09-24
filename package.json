@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +21,14 @@
   "bugs": {
     "url": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4/issues"
   },
-  "homepage": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4#readme"
+  "homepage": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }
