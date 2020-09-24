@@ -1,0 +1,23 @@
+{
+  "name": "blog-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RodolfoSarkisRocha/fullstack-open-part-4.git"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Rodolfo Sarkis Rocha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4/issues"
+  },
+  "homepage": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4#readme"
+}
