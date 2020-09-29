@@ -73,6 +73,35 @@ test("url and title exists", async () => {
   await api.post("/api/blogs").send(blog).expect(400);
 });
 
+test("blog is updated", async () => {
+  const blog = {
+    title: "New Blog",
+    author: "New Author",
+    url: "www.newurl.com",
+    likes: "10",
+  };
+
+  const editedBlog = {
+    title: "Updated Blog",
+    author: "Updated Author",
+    url: "www.updatedurl.com",
+    likes: "1000",
+  };
+
+  const newBlog = await api.post("/api/blogs").send(blog);
+
+  const id = newBlog.body.id;
+
+  const updateBlogResult = await api
+    .put(`/api/blogs/${id}`)
+    .send(editedBlog)
+    .expect(200);    
+
+  const updatedBlog = await api.get(`/api/blogs/${id}`).expect(200);
+
+  expect(updateBlogResult.body).toEqual(updatedBlog.body);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
