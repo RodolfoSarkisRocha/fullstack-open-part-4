@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-require('dotenv').config()
+const { errorHandler } = require("./utils/middleware");
+
+const { MONGODB_URI } = require("./config");
 
 const logger = require("./utils/logger");
 const blogRouter = require("./controllers/blogController");
@@ -17,7 +19,6 @@ const mongoDBOptions = {
 };
 
 // Connecting to database
-const MONGODB_URI = process.env.MONGODB_URI;
 logger.info("connecting to", MONGODB_URI);
 
 mongoose
@@ -32,7 +33,8 @@ mongoose
 // Applying middlewares
 app.use(cors());
 app.use(express.json());
-app.use(middleware.requestLogger)
+app.use(middleware.requestLogger);
 app.use("/api/blogs", blogRouter);
+app.use(errorHandler);
 
 module.exports = app;
