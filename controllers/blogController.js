@@ -1,26 +1,40 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
 const { verifyTitleAndUrl } = require("../utils/blogControllerHelper");
-const logger = require("../utils/logger");
+const errorENUM = require("../utils/errorENUM");
+const jwt = require("jsonwebtoken");
 
 // Get all blogs
 blogRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user");
   response.json(blogs);
 });
 
 // Create blog
 blogRouter.post("/", async (request, response, next) => {
-  if (verifyTitleAndUrl(request.body)) {
-    next({ message: "Missing title or url" });
+  const { body } = request;
+
+  try {  
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" });
   }
 
-  try {
-    const blog = new Blog(request.body);
+  const user = await User.findById(decodedToken.id);
+
+  if (verifyTitleAndUrl(body)) next(errorENUM.ERR06);
+
+    const blog = new Blog({
+      ...body,
+      user: user._id,
+    });
 
     const result = await blog.save();
+    user.blogs = user.blogs.concat(result._id);
+    await user.save();
     response.status(200).json(result);
-  } catch (err) {
+  } catch (err) {    
     next(err);
   }
 });
@@ -30,7 +44,18 @@ blogRouter.delete("/:id", async (request, response, next) => {
   const id = request.params.id;
 
   try {
-    await Blog.findOneAndRemove(id);
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const blog = await Blog.findById(id);
+    const userFromBlog = blog.user.toString();
+
+    if(userFromBlog !== user._id.toString()) next(errorENUM.ERR08);
+
+    await Blog.findByIdAndRemove(id);
     response.status(204).end();
   } catch (err) {
     next(err);

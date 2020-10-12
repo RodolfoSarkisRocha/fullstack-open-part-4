@@ -23,10 +23,13 @@
   },
   "homepage": "https://github.com/RodolfoSarkisRocha/fullstack-open-part-4#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.6"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.6",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",

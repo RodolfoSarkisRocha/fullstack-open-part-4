@@ -1,14 +1,20 @@
+// Configuration
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { errorHandler } = require("./utils/middleware");
-
 const { MONGODB_URI } = require("./config");
 
+// Utils
 const logger = require("./utils/logger");
+
+// Routes
 const blogRouter = require("./controllers/blogController");
-const middleware = require("./utils/middleware");
+const userRouter = require("./controllers/userController");
+const loginRouter = require("./controllers/loginController");
+
+// Middlewares
+const { errorHandler, requestLogger, tokenExtractor } = require("./utils/middleware");
 
 // Database options
 const mongoDBOptions = {
@@ -33,8 +39,11 @@ mongoose
 // Applying middlewares
 app.use(cors());
 app.use(express.json());
-app.use(middleware.requestLogger);
+app.use(requestLogger);
+app.use(tokenExtractor)
 app.use("/api/blogs", blogRouter);
+app.use("/api/users", userRouter);
+app.use("/api/login", loginRouter);
 app.use(errorHandler);
 
 module.exports = app;
